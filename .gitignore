@@ -229,3 +229,6 @@ containers/runtime/Dockerfile
 containers/runtime/project.tar.gz
 containers/runtime/code
 **/node_modules/
+
+# run_docker.sh script (contains credentials)
+run_docker.sh
