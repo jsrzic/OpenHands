@@ -83,8 +83,6 @@ class Runtime(FileEditRuntimeMixin):
         FileEditRuntimeMixin.__init__(self)
 
     def setup_initial_env(self) -> None:
-        if self.attach_to_existing:
-            return
         logger.debug(f'Adding env vars: {self.initial_env_vars}')
         self.add_env_vars(self.initial_env_vars)
         if self.config.sandbox.runtime_startup_env_vars:

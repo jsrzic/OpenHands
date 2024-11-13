@@ -318,6 +318,8 @@ if __name__ == '__main__':
     # example: python client.py 8000 --working-dir /workspace --plugins JupyterRequirement
     args = parser.parse_args()
 
+    logger.debug(f'Args: {args}')
+
     plugins_to_load: list[Plugin] = []
     if args.plugins:
         for plugin in args.plugins:

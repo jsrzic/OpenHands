@@ -23,6 +23,11 @@ def get_runtime_cls(name: str):
         from openhands.runtime.impl.modal.modal_runtime import ModalRuntime
 
         return ModalRuntime
+
+    elif name == 'unleashed':
+        from openhands.runtime.impl.unleashed.unleashed_runtime import UnleashedRuntime
+
+        return UnleashedRuntime
     else:
         raise ValueError(f'Runtime {name} not supported')
 
