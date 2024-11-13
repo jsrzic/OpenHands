@@ -92,12 +92,14 @@ class Session:
         default_llm_config.model = args.get(
             ConfigType.LLM_MODEL, default_llm_config.model
         )
-        default_llm_config.api_key = args.get(
-            ConfigType.LLM_API_KEY, default_llm_config.api_key
-        )
-        default_llm_config.base_url = args.get(
-            ConfigType.LLM_BASE_URL, default_llm_config.base_url
-        )
+
+        # We don't override these in Daytona, because we want to keep the settings from ENV vars
+        # default_llm_config.api_key = args.get(
+        #     ConfigType.LLM_API_KEY, default_llm_config.api_key
+        # )
+        # default_llm_config.base_url = args.get(
+        #     ConfigType.LLM_BASE_URL, default_llm_config.base_url
+        # )
 
         # TODO: override other LLM config & agent config groups (#2075)
 

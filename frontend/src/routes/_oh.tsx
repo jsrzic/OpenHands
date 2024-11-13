@@ -281,7 +281,7 @@ export default function MainApp() {
               AI Provider Configuration
             </span>
             <p className="text-xs text-[#A3A3A3]">
-              To continue, connect an OpenAI, Anthropic, or other LLM account
+              To continue, choose an OpenAI LLM model
             </p>
             {isConnected && (
               <p className="text-xs text-danger">

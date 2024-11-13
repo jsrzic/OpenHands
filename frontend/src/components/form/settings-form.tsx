@@ -78,7 +78,7 @@ export function SettingsForm({
     React.useState(false);
   const [confirmEndSessionModalOpen, setConfirmEndSessionModalOpen] =
     React.useState(false);
-  const [showWarningModal, setShowWarningModal] = React.useState(false);
+  // const [showWarningModal, setShowWarningModal] = React.useState(false);
 
   const submitForm = (formData: FormData) => {
     if (location.pathname === "/app") formData.set("end-session", "true");
@@ -101,9 +101,7 @@ export function SettingsForm({
     const formData = new FormData(event.currentTarget);
     const apiKey = formData.get("api-key");
 
-    if (!apiKey) {
-      setShowWarningModal(true);
-    } else if (location.pathname === "/app") {
+    if (location.pathname === "/app") {
       setConfirmEndSessionModalOpen(true);
     } else {
       submitForm(formData);
@@ -113,25 +111,20 @@ export function SettingsForm({
   const handleCloseClick = () => {
     const formData = new FormData(formRef.current ?? undefined);
     const apiKey = formData.get("api-key");
-
-    if (!apiKey) {
-      setShowWarningModal(true);
-    } else {
-      onClose();
-    }
-  };
-
-  const handleWarningConfirm = () => {
-    setShowWarningModal(false);
-    const formData = new FormData(formRef.current ?? undefined);
-    formData.set("api-key", ""); // Set null value for API key
-    submitForm(formData);
     onClose();
   };
 
-  const handleWarningCancel = () => {
-    setShowWarningModal(false);
-  };
+  // const handleWarningConfirm = () => {
+  //   setShowWarningModal(false);
+  //   const formData = new FormData(formRef.current ?? undefined);
+  //   formData.set("api-key", ""); // Set null value for API key
+  //   submitForm(formData);
+  //   onClose();
+  // };
+
+  // const handleWarningCancel = () => {
+  //   setShowWarningModal(false);
+  // };
 
   return (
     <div>
@@ -185,7 +178,7 @@ export function SettingsForm({
                   }}
                 />
               </fieldset>
-              <fieldset className="flex flex-col gap-2">
+              {/* <fieldset className="flex flex-col gap-2">
                 <label
                   htmlFor="base-url"
                   className="font-[500] text-[#A3A3A3] text-xs"
@@ -203,7 +196,7 @@ export function SettingsForm({
                       "bg-[#27272A] rounded-md text-sm px-3 py-[10px]",
                   }}
                 />
-              </fieldset>
+              </fieldset> */}
             </>
           )}
 
@@ -215,7 +208,7 @@ export function SettingsForm({
             />
           )}
 
-          <fieldset data-testid="api-key-input" className="flex flex-col gap-2">
+          {/* <fieldset data-testid="api-key-input" className="flex flex-col gap-2">
             <label
               htmlFor="api-key"
               className="font-[500] text-[#A3A3A3] text-xs"
@@ -244,7 +237,7 @@ export function SettingsForm({
                 Click here for instructions
               </a>
             </p>
-          </fieldset>
+          </fieldset> */}
 
           {showAdvancedOptions && (
             <fieldset
@@ -399,7 +392,7 @@ export function SettingsForm({
           />
         </ModalBackdrop>
       )}
-      {showWarningModal && (
+      {/* {showWarningModal && (
         <ModalBackdrop>
           <DangerModal
             title="Are you sure?"
@@ -416,7 +409,7 @@ export function SettingsForm({
             }}
           />
         </ModalBackdrop>
-      )}
+      )} */}
     </div>
   );
 }

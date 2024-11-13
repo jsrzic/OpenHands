@@ -33,9 +33,8 @@ export const organizeModelsAndProviders = (models: string[]) => {
       model: modelId,
     } = extractModelAndProvider(model);
 
-    // Ignore "anthropic" providers with a separator of "."
-    // These are outdated and incompatible providers.
-    if (provider === "anthropic" && separator === ".") {
+    // Keep only models from the "openai" provider
+    if (provider !== "openai") {
       return;
     }
 
@@ -45,5 +44,6 @@ export const organizeModelsAndProviders = (models: string[]) => {
     }
     object[key].models.push(modelId);
   });
+
   return object;
 };
