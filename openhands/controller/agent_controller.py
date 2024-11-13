@@ -16,6 +16,7 @@ from openhands.core.exceptions import (
 )
 from openhands.core.logger import openhands_logger as logger
 from openhands.core.schema import AgentState
+from openhands.daytona.client import WorkspaceClient
 from openhands.events import EventSource, EventStream, EventStreamSubscriber
 from openhands.events.action import (
     Action,
@@ -119,6 +120,7 @@ class AgentController:
 
         # stuck helper
         self._stuck_detector = StuckDetector(self.state)
+        self._daytona_workspace_client = WorkspaceClient()
 
     async def close(self):
         """Closes the agent controller, canceling any ongoing tasks and unsubscribing from the event stream."""
@@ -187,6 +189,10 @@ class AgentController:
         Args:
             event (Event): The incoming event to process.
         """
+
+        # Send keep-alive to Daytona workspace if more than a minute passed since last sending
+        self._daytona_workspace_client.send_keep_alive()
+
         if hasattr(event, 'hidden') and event.hidden:
             return
         if isinstance(event, Action):
