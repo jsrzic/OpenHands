@@ -235,10 +235,13 @@ class BashSession:
         return output, exit_code
 
     def _parse_exit_code(self, output: str) -> int:
+        # Remove terminal control characters
+        cleaned_output = re.sub(r'\x1b\[\??\d+[hl]', '', output.strip())
         try:
-            exit_code = int(output.strip().split()[0])
+            exit_code = int(cleaned_output.split()[0])
         except Exception:
             logger.error('Error getting exit code from bash script')
+            logger.debug(f'Failed bash command output: {output}')
             # If we try to run an invalid shell script the output sometimes includes error text
             # rather than the error code - we assume this is an error
             exit_code = 2

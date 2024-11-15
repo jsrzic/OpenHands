@@ -69,13 +69,6 @@ ENV VIRTUAL_ENV=/app/.venv \
 COPY --chown=openhands:app --chmod=770 --from=backend-builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 RUN playwright install --with-deps chromium
 
-
-RUN \
-    sudo echo "OH_INTERPRETER_PATH=$(poetry run python -c "import sys; print(sys.executable)")" >> /etc/environment && \
-    poetry cache clear --all . && \
-    # Clean up
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
 COPY --chown=openhands:app --chmod=770 ./openhands ./openhands
 COPY --chown=openhands:app --chmod=777 ./openhands/runtime/plugins ./openhands/runtime/plugins
 COPY --chown=openhands:app --chmod=770 ./openhands/agenthub ./openhands/agenthub
@@ -92,9 +85,14 @@ RUN python openhands/core/download.py # No-op to download assets
 RUN find /app \! -group app -exec chgrp app {} +
 
 COPY --chown=openhands:app --chmod=770 --from=frontend-builder /app/build ./frontend/build
-COPY --chown=openhands:app --chmod=770 ./containers/app/entrypoint.sh /app/entrypoint.sh
+COPY --chown=openhands:app --chmod=770 ./containers/unleashed/entrypoint.sh /app/entrypoint.sh
 
 USER root
+
+RUN \
+    echo "OH_INTERPRETER_PATH=$(python -c "import sys; print(sys.executable)")" >> /etc/environment && \
+    # Clean up
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /app
 

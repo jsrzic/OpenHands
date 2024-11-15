@@ -25,12 +25,8 @@ class JupyterPlugin(Plugin):
         self.gateway_process = subprocess.Popen(
             (
                 f"su - {username} -s /bin/bash << 'EOF'\n"
-                'cd /openhands/code\n'
-                'export POETRY_VIRTUALENVS_PATH=/openhands/poetry;\n'
-                'export PYTHONPATH=/openhands/code:$PYTHONPATH;\n'
-                'export MAMBA_ROOT_PREFIX=/openhands/micromamba;\n'
-                '/openhands/micromamba/bin/micromamba run -n openhands '
-                'poetry run jupyter kernelgateway '
+                'cd /app\n'
+                'jupyter kernelgateway '
                 '--KernelGatewayApp.ip=0.0.0.0 '
                 f'--KernelGatewayApp.port={self.kernel_gateway_port}\n'
                 'EOF'

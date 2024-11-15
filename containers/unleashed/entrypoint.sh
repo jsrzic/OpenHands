@@ -18,4 +18,13 @@ if [ -z "$WORKSPACE_MOUNT_PATH" ]; then
   unset WORKSPACE_BASE
 fi
 
+if [[ "$SANDBOX_USER_ID" -eq 0 ]]; then
+  echo "Running OpenHands as root"
+  export RUN_AS_OPENHANDS=false
+  mkdir -p /root/.cache/ms-playwright/
+  if [ -d "/home/openhands/.cache/ms-playwright/" ]; then
+    mv /home/openhands/.cache/ms-playwright/ /root/.cache/
+  fi
+fi
+
 /bin/bash -c "${*@Q}" # This magically runs any arguments passed to the script as a command
