@@ -68,6 +68,10 @@ class RemoteRuntime(ActionExecutionClient):
                 'debug',
                 'Setting workspace_base is not supported in the remote runtime.',
             )
+        if self.config.sandbox.remote_runtime_api_url is None:
+            raise ValueError(
+                'remote_runtime_api_url is required in the remote runtime.'
+            )
 
         self.runtime_builder = RemoteRuntimeBuilder(
             self.config.sandbox.remote_runtime_api_url,
@@ -337,8 +341,6 @@ class RemoteRuntime(ActionExecutionClient):
                 f'Runtime (ID={self.runtime_id}) is not yet ready. Status: {pod_status}'
             )
         elif pod_status in ('failed', 'unknown', 'crashloopbackoff'):
-            # clean up the runtime
-            self.close()
             if pod_status == 'crashloopbackoff':
                 raise AgentRuntimeUnavailableError(
                     'Runtime crashed and is being restarted, potentially due to memory usage. Please try again.'
@@ -377,6 +379,7 @@ class RemoteRuntime(ActionExecutionClient):
 
     def _send_runtime_api_request(self, method, url, **kwargs):
         try:
+            kwargs['timeout'] = self.config.sandbox.remote_runtime_api_timeout
             return send_request(self.session, method, url, **kwargs)
         except requests.Timeout:
             self.log(
